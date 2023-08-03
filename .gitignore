@@ -1,0 +1,8 @@
+# pretrained model 
+**/pretrained_models/
+
+# cache
+**/__pycache__/
+
+# config
+config.ini

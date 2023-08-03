@@ -4,6 +4,11 @@ import torch.nn as  nn
 import torch
 import torchvision.transforms as standard_transforms
 
+mean_std = ( [.485, .456, .406], [.229, .224, .225])
+fig_class_trasform = standard_transforms.Compose([
+standard_transforms.Resize((384, 384), interpolation=Image.ANTIALIAS),
+standard_transforms.ToTensor(),
+standard_transforms.Normalize(*mean_std)])
 
 labelNames = ['3D objects',
     'Algorithm',
@@ -50,11 +55,22 @@ def fig_classification(fig_class_model_path,device):
         standard_transforms.ToTensor(),
         standard_transforms.Normalize(*mean_std)         ])
     return fig_model, fig_class_trasform
+# For pth
+# def figure_type_detection(fig_model, fig_class_trasform, img_path, device):
+#     img = Image.open(img_path).convert('RGB')
+#     img_tensor = fig_class_trasform(img)
+#     fig_label = fig_model(img_tensor.to(device).unsqueeze(0))
+#     fig_prediction = fig_label.max(1)[1]
+#     out_put =labelNames[fig_prediction]
+#     return out_put
 
-def figure_type_detection(fig_model, fig_class_trasform, img_path, device):
+# For onnx
+def figure_type_detection(fig_ort_session, img_path):
     img = Image.open(img_path).convert('RGB')
-    img_tensor = fig_class_trasform(img)
-    fig_label = fig_model(img_tensor.to(device).unsqueeze(0))
+    img_tensor = fig_class_trasform(img).unsqueeze(0).numpy()
+    ort_inputs={'input':img_tensor}
+    fig_label = fig_ort_session.run(['output'], ort_inputs)[0]
+    fig_label = torch.tensor(fig_label)
     fig_prediction = fig_label.max(1)[1]
     out_put =labelNames[fig_prediction]
     return out_put

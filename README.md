@@ -3,7 +3,14 @@ This is a reporsity about scientific figure animation
 For input with muliti imags, all available output gifs are saved in outputs(by default). Selected gifs for presentation will be saved in presentation(by default). 
 # Install
 ## [GroundDINO Install](https://github.com/IDEA-Research/GroundingDINO)<br>
-Please clone GroundDino into utils first and follow the instrcution as the link.<br>
+Move to utils folder and run to install GDINO in project 
+```
+pip install -e .
+```
+If you incounter some problems, you can check the link above and clone GroundDino into utils and rename it as GDINO.
+Following the instruction as the link.
+
+
 ## Environment<br>
 See requirement.txt for detail.
 # Pretrained_models<br>

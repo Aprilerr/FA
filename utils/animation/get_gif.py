@@ -2,8 +2,15 @@ import numpy as np
 import cv2
 import imageio.v2 as imageio
 import random
+import torch
 
+from torchvision.ops import box_convert
 
+def get_box(image_source: np.ndarray, boxes: torch.Tensor):
+    h, w, _ = image_source.shape
+    boxes = boxes * torch.Tensor([w, h, w, h])
+    xyxy = box_convert(boxes=boxes, in_fmt="cxcywh", out_fmt="xyxy").numpy()
+    return xyxy
 
 def animation_select(image,box_list,figure_type):
     if figure_type=='Scatter plot':
